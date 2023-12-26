@@ -1,0 +1,20 @@
+{
+  "name": "beatbot",
+  "version": "1.0.0",
+  "description": "A Node Js Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "ldebey",
+  "license": "ISC",
+  "dependencies": {
+    "discord-api-types": "^0.37.66",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  }
+}
