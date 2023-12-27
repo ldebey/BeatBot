@@ -4,6 +4,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { Player } = require('discord-player');
 const token = process.env.DISCORD_TOKEN;
+const developerId = process.env.DISCORD_DEVELOPER_ID;
 
 const client = new Client(
     {
@@ -30,6 +31,56 @@ player.events.on('playerStart', (queue, track) => {
         .setAuthor({ name: track.author })
         .setFooter({ text: `Durée: ${track.duration}` })
         .setThumbnail(track.thumbnail)
+        .setTimestamp(new Date());
+
+    queue.metadata.channel.send({ embeds: [embed] });
+});
+
+player.events.on('disconnect', (queue) => {
+    const embed = new EmbedBuilder()
+        .setColor('#ff088c')
+        .setTitle('Déconnecté')
+        .setDescription('J\'ai fini de jouer la musique.')
+        .setTimestamp(new Date());
+
+    queue.metadata.channel.send({ embeds: [embed] });
+});
+
+player.events.on('emptyChannel', (queue) => {
+    const embed = new EmbedBuilder()
+        .setColor('#ff088c')
+        .setTitle('Déconnecté')
+        .setDescription('Tout le monde a quitté le salon vocal, j\'ai fini de jouer la musique.')
+        .setTimestamp(new Date());
+
+    queue.metadata.channel.send({ embeds: [embed] });
+});
+
+player.events.on('error', (queue, error) => {
+    const embed = new EmbedBuilder()
+        .setColor('#ff088c')
+        .setTitle('Erreur')
+        .setDescription(`On a un problème chef <@${developerId}>: ${error.message}`)
+        .setTimestamp(new Date());
+
+    queue.metadata.channel.send({ embeds: [embed] });
+});
+
+player.events.on('playerError', (queue, error) => {
+    const embed = new EmbedBuilder()
+        .setColor('#ff088c')
+        .setTitle('Erreur')
+        .setDescription(`On a un problème lecteur chef <@${developerId}>: ${error.message}`)
+        .setTimestamp(new Date());
+
+    queue.metadata.channel.send({ embeds: [embed] });
+});
+
+player.events.on('emptyQueue', (queue) => {
+    const embed = new EmbedBuilder()
+        .setColor('#ff088c')
+        .setTitle('File d\'attente vide')
+        .setDescription('Il n\'y a plus de musique dans la file d\'attente.')
         .setTimestamp(new Date());
 
     queue.metadata.channel.send({ embeds: [embed] });
